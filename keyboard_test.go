@@ -5,7 +5,7 @@ package keyboard
 import "testing"
 
 func TestKeyPress_Press(t *testing.T) {
-	p := stringToPress("K")
+	p := stringToPress("g")
 
 	err := p.Press()
 	if err != nil {

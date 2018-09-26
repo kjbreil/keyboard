@@ -58,15 +58,19 @@ func upKey(key rune) error {
 }
 
 func stringToPress(s string) (k KeyPress) {
-	if unicode.IsLower(rune(s[0])) {
-		s = strings.ToUpper(s)
-	} else {
-		k.Upper = true
-	}
 
 	if len(s) > 0 {
 		// not a single character so going to do stuff, right now nothing
 	}
+
+	// if its uppercase define set upper flag, otherwise dont set flag but
+	// set string to upper case for conversion to rune
+	if unicode.IsUpper(rune(s[0])) {
+		k.Upper = true
+	} else {
+		s = strings.ToUpper(s)
+	}
+
 	key := keyToRune(s)
 	k.Key = key
 
@@ -84,7 +88,7 @@ func keyToRune(s string) rune {
 	return rune(s[0])
 }
 
-// Press is a single key press, with modifier
+// Press is a single key press, with modifier and case (shift)
 // error return does not work
 func (p KeyPress) Press() error {
 	if p.Modifier != nil {
@@ -97,7 +101,6 @@ func (p KeyPress) Press() error {
 
 	if p.Upper {
 		err := downKey(0x10)
-		// error is returning "The operation completed successfully." :-(
 		if err != nil {
 			// return err
 		}
