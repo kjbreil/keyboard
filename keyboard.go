@@ -33,24 +33,25 @@ type KeyPress struct {
 	Sleep    *int
 }
 
-func stringToBurst(s string) (b KeyBurst) {
-	for _, e := range s {
-
-		ep := stringToPress(string(e))
-		b.Presses = append(b.Presses, ep)
-
+func stringToBurst(s string, i int) (b KeyBurst, err error) {
+	for _, r := range s {
+		var k KeyPress
+		if unicode.IsUpper(r) {
+			k.Upper = true
+		} else {
+			r = rune(strings.ToUpper(string(r))[0])
+		}
+		k.Key = r
+		b.Presses = append(b.Presses, k)
 	}
 	return
 }
 
-// func stringToPressArray(s string, i int) []KeyPress {
-
-// }
-
-func stringToPress(s string) (k KeyPress) {
+func stringToPress(s string) (k KeyPress, err error) {
 
 	if len(s) > 0 {
-		// not a single character so going to do stuff, right now nothing
+		err = fmt.Errorf("Strings longer than a character need to be converted to a burst")
+		return
 	}
 
 	// if its uppercase define set upper flag, otherwise dont set flag but
@@ -66,7 +67,7 @@ func stringToPress(s string) (k KeyPress) {
 
 	// upper case check and addition
 
-	return k
+	return k, nil
 
 }
 
