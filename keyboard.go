@@ -66,6 +66,9 @@ func stringToPress(s string) (k KeyPress) {
 
 // this functions purpose falls on its head unless you pass a single character
 func keyToRune(s string) rune {
+	if len(s) > 1 {
+		panic("string is not single character")
+	}
 	return rune(s[0])
 }
 
