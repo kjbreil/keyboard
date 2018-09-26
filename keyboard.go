@@ -3,7 +3,9 @@ package keyboard
 
 import (
 	"fmt"
+	"strings"
 	"time"
+	"unicode"
 
 	"golang.org/x/sys/windows"
 )
@@ -32,6 +34,7 @@ type KeyBurst struct {
 type KeyPress struct {
 	Key      rune
 	Modifier *rune
+	Upper    bool
 	Sleep    *int
 }
 
@@ -55,11 +58,20 @@ func upKey(key rune) error {
 }
 
 func stringToPress(s string) (k KeyPress) {
+	if unicode.IsLower(rune(s[0])) {
+		s = strings.ToUpper(s)
+	} else {
+		k.Upper = true
+	}
+
 	if len(s) > 0 {
 		// not a single character so going to do stuff, right now nothing
 	}
 	key := keyToRune(s)
 	k.Key = key
+
+	// upper case check and addition
+
 	return k
 
 }
@@ -83,12 +95,31 @@ func (p KeyPress) Press() error {
 		}
 	}
 
+	if p.Upper {
+		err := downKey(0x10)
+		// error is returning "The operation completed successfully." :-(
+		if err != nil {
+			// return err
+		}
+	}
+
 	err := downKey(p.Key)
 	if err != nil {
 		// return err
 	}
 
 	err = upKey(p.Key)
+	if err != nil {
+		// return err
+	}
+
+	if p.Upper {
+		err := upKey(0x10)
+		// error is returning "The operation completed successfully." :-(
+		if err != nil {
+			// return err
+		}
+	}
 
 	if p.Modifier != nil {
 		err := upKey(*p.Modifier)
