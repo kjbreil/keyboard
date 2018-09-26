@@ -2,6 +2,7 @@
 package keyboard
 
 import (
+	"fmt"
 	"time"
 
 	"golang.org/x/sys/windows"
@@ -53,9 +54,24 @@ func upKey(key rune) error {
 	return err
 }
 
+func stringToPress(s string) (k KeyPress) {
+	if len(s) > 0 {
+		// not a single character so going to do stuff, right now nothing
+	}
+	key := keyToRune(s)
+	k.Key = key
+	return k
+
+}
+
+// this functions purpose falls on its head unless you pass a single character
+func keyToRune(s string) rune {
+	return rune(s[0])
+}
+
 // Press is a single key press, with modifier
 // error return does not work
-func (p KeyPress) Press(sleep int) error {
+func (p KeyPress) Press() error {
 	if p.Modifier != nil {
 		err := downKey(*p.Modifier)
 		// error is returning "The operation completed successfully." :-(
@@ -84,4 +100,15 @@ func (p KeyPress) Press(sleep int) error {
 	}
 
 	return nil
+}
+
+func (b *KeyBurst) stringToBurst(s string) {
+	for _, l := range s {
+		p := KeyPress{
+			Key: l,
+		}
+		b.Presses = append(b.Presses, p)
+	}
+	fmt.Println(b)
+	return
 }
