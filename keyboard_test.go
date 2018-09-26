@@ -2,15 +2,19 @@
 
 package keyboard
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestKeyPress_Press(t *testing.T) {
-	p := stringToPress("g")
+	p, _ := stringToPress("a")
 
 	err := p.Press()
 	if err != nil {
 		t.Error(err)
 	}
+
+	t.Fail()
 
 	// Press Delete to clear the a from whatever just took the input
 
@@ -21,4 +25,8 @@ func TestKeyPress_Press(t *testing.T) {
 	// }
 
 	// p.Press()
+}
+
+func Test_stringToBurst(t *testing.T) {
+	// NOTHING
 }
