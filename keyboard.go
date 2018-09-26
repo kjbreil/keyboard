@@ -57,6 +57,20 @@ func upKey(key rune) error {
 	return err
 }
 
+func stringToBurst(s string) (b KeyBurst) {
+	for _, e := range s {
+
+		ep := stringToPress(string(e))
+		b.Presses = append(b.Presses, ep)
+
+	}
+	return
+}
+
+// func stringToPressArray(s string, i int) []KeyPress {
+
+// }
+
 func stringToPress(s string) (k KeyPress) {
 
 	if len(s) > 0 {
