@@ -162,4 +162,5 @@ func (ks *KeySeq) Press() error {
 			return err
 		}
 	}
+	return nil
 }
