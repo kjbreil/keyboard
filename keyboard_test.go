@@ -9,11 +9,17 @@ import (
 func TestKeyPress_Press(t *testing.T) {
 	// p, _ := stringToPress("a")
 
-	kb, _ := stringToBurst("2282712111")
+	kb, _ := StringToBurst("2282712111", nil, nil)
 
 	kb.Press()
 
 	t.Fail()
+
+	var kp KeyPress
+
+	kp.Key = 0x0D
+
+	kp.Press()
 
 	// Press Delete to clear the a from whatever just took the input
 
