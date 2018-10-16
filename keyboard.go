@@ -62,8 +62,8 @@ func stringToPress(s string) (k KeyPress, err error) {
 		return
 	}
 
-	// if its uppercase define set upper flag, otherwise dont set flag but
-	// set string to upper case for conversion to rune
+	// if its uppercase set upper flag, otherwise dont set flag but set string
+	// to upper case for conversion to rune
 	if unicode.IsUpper(rune(s[0])) {
 		k.Upper = true
 	} else {
