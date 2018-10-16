@@ -7,12 +7,11 @@ import (
 )
 
 func TestKeyPress_Press(t *testing.T) {
-	p, _ := stringToPress("a")
+	// p, _ := stringToPress("a")
 
-	err := p.Press()
-	if err != nil {
-		t.Error(err)
-	}
+	kb, _ := stringToBurst("2282712111")
+
+	kb.Press()
 
 	t.Fail()
 

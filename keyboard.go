@@ -33,7 +33,8 @@ type KeyPress struct {
 	Sleep    *int
 }
 
-func stringToBurst(s string, i int) (b KeyBurst, err error) {
+// StringToBurst takes a string and sleep times and creates a keyburst
+func StringToBurst(s string, keySleep *int, burstSleep *int) (b KeyBurst, err error) {
 	for _, r := range s {
 		var k KeyPress
 		if unicode.IsUpper(r) {
@@ -42,8 +43,15 @@ func stringToBurst(s string, i int) (b KeyBurst, err error) {
 			r = rune(strings.ToUpper(string(r))[0])
 		}
 		k.Key = r
+		if keySleep != nil {
+			k.Sleep = keySleep
+		}
 		b.Presses = append(b.Presses, k)
 	}
+	if burstSleep != nil {
+		b.Sleep = burstSleep
+	}
+
 	return
 }
 
@@ -130,13 +138,28 @@ func (p KeyPress) Press() error {
 	return nil
 }
 
-func (b *KeyBurst) stringToBurst(s string) {
-	for _, l := range s {
-		p := KeyPress{
-			Key: l,
+// Press a burst of key
+func (b *KeyBurst) Press() error {
+	for _, kp := range b.Presses {
+		err := kp.Press()
+		if err != nil {
+			return err
 		}
-		b.Presses = append(b.Presses, p)
 	}
-	fmt.Println(b)
-	return
+
+	if b.Sleep != nil {
+		time.Sleep(time.Duration(*b.Sleep) * time.Millisecond)
+	}
+
+	return nil
+}
+
+// Press a sequence of keys
+func (ks *KeySeq) Press() error {
+	for _, kb := range ks.Bursts {
+		err := kb.Press()
+		if err != nil {
+			return err
+		}
+	}
 }

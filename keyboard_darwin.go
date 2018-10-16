@@ -5,11 +5,11 @@ import (
 )
 
 func downKey(key rune) error {
-	fmt.Printf("DOWN: %s", string(key))
+	fmt.Printf("DOWN: %v\n", string(key))
 	return nil
 }
 
 func upKey(key rune) error {
-	fmt.Printf("UP: %s", string(key))
+	fmt.Printf("UP: %v\n", string(key))
 	return nil
 }
