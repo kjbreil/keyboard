@@ -22,15 +22,15 @@ type KeySeq struct {
 // KeyBurst is an array of keys that will be run in a burst
 type KeyBurst struct {
 	Presses []KeyPress
-	Sleep   *int
+	Sleep   *int `json:",omitempty"`
 }
 
 // KeyPress is a single key press
 type KeyPress struct {
-	Key      rune
-	Modifier *rune
-	Upper    bool
-	Sleep    *int
+	Key      rune  `json:",omitempty"`
+	Modifier *rune `json:",omitempty"`
+	Upper    bool  `json:",omitempty"`
+	Sleep    *int  `json:",omitempty"`
 }
 
 // StringToBurst takes a string and sleep times and creates a keyburst
