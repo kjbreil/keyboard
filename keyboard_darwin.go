@@ -13,3 +13,13 @@ func upKey(key rune) error {
 	fmt.Printf("UP: %v\n", string(key))
 	return nil
 }
+
+// ListWindowNames is a STUB
+func ListWindowNames() error {
+	return nil
+}
+
+// SetForegroundWindow is a STUB
+func SetForegroundWindow(hwnd uintptr) bool {
+	return false
+}
