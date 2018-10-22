@@ -164,3 +164,12 @@ func (ks *KeySeq) Press() error {
 	}
 	return nil
 }
+
+// Press presses a single key, just the key
+// needs and error return and all that stuff
+func Press(key rune) {
+	var kp KeyPress
+	kp.Key = key
+	kp.Press()
+	return
+}
