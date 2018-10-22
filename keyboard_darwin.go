@@ -23,3 +23,8 @@ func ListWindowNames() error {
 func SetForegroundWindow(hwnd uintptr) bool {
 	return false
 }
+
+// FindWindow is a stub
+func FindWindow(win string) (ret uintptr, err error) {
+	return 1, nil
+}
