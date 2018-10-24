@@ -22,6 +22,8 @@ var (
 // downKey is the down action on a key, this is how modifiers are added to a key
 // press
 func downKey(key rune) error {
+	test := Scan[key]
+	fmt.Printf("key: %s, virt: %v, scan: %v\n", test.name, test.virtual, test.scan)
 	vkey := key + 0x80
 	_, _, err := keyEventDLL.Call(uintptr(key), uintptr(vkey), 0, 0)
 	// error return needs to be corrected before here because its always filled
