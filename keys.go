@@ -56,7 +56,7 @@ var Scan = map[rune]VirtScan{
 	'7': VirtScan{
 		name:    "7",
 		virtual: 0x37,
-		scan:    0x07,
+		scan:    0x08,
 	},
 	'8': VirtScan{
 		name:    "8",
@@ -132,6 +132,11 @@ var Scan = map[rune]VirtScan{
 		name:    "Left Control",
 		virtual: 0xA2,
 		scan:    0x1d,
+	},
+	0x0D: VirtScan{
+		name:    "Enter",
+		virtual: 0x0D,
+		scan:    0x1c,
 	},
 }
 

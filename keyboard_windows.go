@@ -2,6 +2,7 @@ package keyboard
 
 import (
 	"fmt"
+	"log"
 	"syscall"
 	"unsafe"
 
@@ -22,9 +23,16 @@ var (
 // downKey is the down action on a key, this is how modifiers are added to a key
 // press
 func downKey(key rune) error {
-	test := Scan[key]
-	fmt.Printf("key: %s, virt: %v, scan: %v\n", test.name, test.virtual, test.scan)
-	vkey := key + 0x80
+	var vkey rune
+	scanCode, ok := Scan[key]
+	if ok {
+		key = rune(scanCode.virtual)
+		vkey = rune(scanCode.scan)
+		log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.name, key, vkey)
+
+	} else {
+		vkey = key + 0x80
+	}
 	_, _, err := keyEventDLL.Call(uintptr(key), uintptr(vkey), 0, 0)
 	// error return needs to be corrected before here because its always filled
 	// even if there is no error
@@ -33,7 +41,16 @@ func downKey(key rune) error {
 
 // upKey the opposite of downkey
 func upKey(key rune) error {
-	vkey := key + 0x80
+	var vkey rune
+	scanCode, ok := Scan[key]
+	if ok {
+		key = rune(scanCode.virtual)
+		vkey = rune(scanCode.scan)
+
+	} else {
+		vkey = key + 0x80
+	}
+
 	// defining keyUp to be more "verbose"
 	var keyUp uintptr = 0x0002
 	_, _, err := keyEventDLL.Call(uintptr(key), uintptr(vkey), keyUp, 0)
