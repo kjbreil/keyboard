@@ -123,6 +123,16 @@ var Scan = map[rune]VirtScan{
 		virtual: 0x7A,
 		scan:    0x0a,
 	},
+	0xA0: VirtScan{
+		name:    "Left Shift",
+		virtual: 0xA0,
+		scan:    0x2a,
+	},
+	0xA2: VirtScan{
+		name:    "Left Control",
+		virtual: 0xA2,
+		scan:    0x1d,
+	},
 }
 
 // The key modifier constans
