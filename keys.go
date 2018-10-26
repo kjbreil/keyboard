@@ -138,6 +138,11 @@ var Scan = map[rune]VirtScan{
 		virtual: 0x0D,
 		scan:    0x1c,
 	},
+	'.': VirtScan{
+		name:    ".",
+		virtual: 0x6E,
+		scan:    0x34,
+	},
 }
 
 // The key modifier constans
