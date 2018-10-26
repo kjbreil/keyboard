@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"syscall"
+	"time"
 	"unsafe"
 
 	"golang.org/x/sys/windows"
@@ -29,10 +30,14 @@ func downKey(key rune) error {
 		key = rune(scanCode.virtual)
 		vkey = rune(scanCode.scan)
 		log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.name, key, vkey)
-
+		if scanCode.name == "." {
+			time.Sleep(1 * time.Second)
+		}
 	} else {
 		vkey = key + 0x80
 	}
+	// for some reason applications miss periods, pause before entering
+
 	_, _, err := keyEventDLL.Call(uintptr(key), uintptr(vkey), 0, 0)
 	// error return needs to be corrected before here because its always filled
 	// even if there is no error
