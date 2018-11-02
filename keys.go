@@ -68,6 +68,11 @@ var Scan = map[rune]VirtScan{
 		virtual: 0x39,
 		scan:    0x0a,
 	},
+	'B': VirtScan{
+		name:    "B",
+		virtual: 0x42,
+		scan:    0x30,
+	},
 	0x70: VirtScan{
 		name:    "F1",
 		virtual: 0x70,
