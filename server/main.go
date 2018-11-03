@@ -15,10 +15,11 @@ import (
 )
 
 var (
-	tls      = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
-	certFile = flag.String("cert_file", "", "The TLS cert file")
-	keyFile  = flag.String("key_file", "", "The TLS key file")
-	port     = flag.Int("port", 10000, "The server port")
+	tls       = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
+	certFile  = flag.String("cert_file", "", "The TLS cert file")
+	keyFile   = flag.String("key_file", "", "The TLS key file")
+	port      = flag.Int("port", 10000, "The server port")
+	shouldLog = flag.Bool("log", false, "Verbose Logging")
 )
 
 type server struct{}
@@ -59,7 +60,9 @@ func (s *server) KeyBurst(stream pb.KeyRPC_KeyBurstServer) error {
 			mo := rune(key.Modifier)
 			kp.Modifier = &mo
 		}
-		log.Printf("Going to press: %s\n", keyboard.Scan[kp.Key].Name)
+		if *shouldLog {
+			log.Printf("Going to press: %s\n", keyboard.Scan[kp.Key].Name)
+		}
 		err = kp.Press()
 
 		if err != nil {
