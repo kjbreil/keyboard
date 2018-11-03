@@ -1,4 +1,4 @@
-package main
+package keyboard
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/kjbreil/keyboard"
 	pb "github.com/kjbreil/keyboard/keyrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -19,8 +18,33 @@ var (
 	serverHostOverride = flag.String("server_host_override", "x.test.youtube.com", "The server name use to verify the hostname returned by TLS handshake")
 )
 
-func runKey(client pb.KeyRPCClient) {
-	keys := stringToKeys("111112222233333444445555566666777778888899999")
+// RunString sends a complete string
+func RunString(s string, client pb.KeyRPCClient) {
+	keys := stringToKeys(s)
+	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
+	defer cancel()
+	stream, err := client.KeyRoute(ctx)
+	if err != nil {
+		log.Fatalf("%v.KeyRoute(_) = _, %v", client, err)
+	}
+	for _, key := range keys {
+		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
+		log.Printf("Sending Key: %s", key.KeyName)
+		err := stream.Send(key)
+		if err != nil {
+			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
+		}
+	}
+	reply, err := stream.CloseAndRecv()
+
+	if !reply.Complete {
+		log.Fatalf("Got Error from Server:")
+	}
+}
+
+// RunBurst sends a complete burst
+func RunBurst(b KeyBurst, client pb.KeyRPCClient) {
+	keys := burstToKeys(b)
 	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
 	defer cancel()
 	stream, err := client.KeyRoute(ctx)
@@ -43,7 +67,7 @@ func runKey(client pb.KeyRPCClient) {
 }
 
 func randomKey() *pb.Key {
-	key := keyboard.Scan[randKey(keyboard.Scan)]
+	key := Scan[randKey(Scan)]
 
 	return &pb.Key{
 		KeyName: key.Name,
@@ -55,14 +79,14 @@ func randomKey() *pb.Key {
 
 }
 
-func randKey(scan map[rune]keyboard.VirtScan) rune {
+func randKey(scan map[rune]VirtScan) rune {
 	for k := range scan {
 		return k
 	}
 	return 0
 }
 
-func main() {
+func fakemain() {
 	flag.Parse()
 	var opts []grpc.DialOption
 	if *tls {
@@ -84,18 +108,33 @@ func main() {
 	defer conn.Close()
 	client := pb.NewKeyRPCClient(conn)
 
-	runKey(client)
+	RunString("123", client)
 }
 
 func stringToKeys(s string) (keys []*pb.Key) {
 	ks, bs := 100, 100
 	// silently throwing away an error - get rid of this ASAP
-	b, _ := keyboard.StringToBurst(s, &ks, &bs)
+	b, _ := StringToBurst(s, &ks, &bs)
 	for _, k := range b.Presses {
 		var key = &pb.Key{
-			KeyName: keyboard.Scan[k.Key].Name,
-			Virtual: uint32(keyboard.Scan[k.Key].Virtual),
-			Scan:    uint32(keyboard.Scan[k.Key].Scan),
+			KeyName: Scan[k.Key].Name,
+			Virtual: uint32(Scan[k.Key].Virtual),
+			Scan:    uint32(Scan[k.Key].Scan),
+			Sleep:   500,
+			Mock:    true,
+		}
+		keys = append(keys, key)
+		// k.
+	}
+	return
+}
+
+func burstToKeys(b KeyBurst) (keys []*pb.Key) {
+	for _, k := range b.Presses {
+		var key = &pb.Key{
+			KeyName: Scan[k.Key].Name,
+			Virtual: uint32(Scan[k.Key].Virtual),
+			Scan:    uint32(Scan[k.Key].Scan),
 			Sleep:   500,
 			Mock:    true,
 		}
