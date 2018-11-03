@@ -3,7 +3,6 @@ package keyboard
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	pb "github.com/kjbreil/keyboard/keyrpc"
@@ -32,7 +31,7 @@ func (b KeyBurst) Server(serverAddr *string) error {
 	}
 	for _, key := range keys {
 		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
-		log.Printf("Sending Key: %s", Scan[rune(key.Key)].Name)
+		// log.Printf("Sending Key: %s", Scan[rune(key.Key)].Name)
 		err := stream.Send(key)
 		if err != nil {
 			return err
