@@ -93,6 +93,69 @@ func (m *Key) GetMock() bool {
 	return false
 }
 
+type KeyPress struct {
+	Key                  uint32   `protobuf:"varint,1,opt,name=Key,proto3" json:"Key,omitempty"`
+	Modifier             uint32   `protobuf:"varint,2,opt,name=Modifier,proto3" json:"Modifier,omitempty"`
+	Upper                bool     `protobuf:"varint,3,opt,name=Upper,proto3" json:"Upper,omitempty"`
+	Sleep                uint32   `protobuf:"varint,4,opt,name=Sleep,proto3" json:"Sleep,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *KeyPress) Reset()         { *m = KeyPress{} }
+func (m *KeyPress) String() string { return proto.CompactTextString(m) }
+func (*KeyPress) ProtoMessage()    {}
+func (*KeyPress) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f0b261c32c410cd6, []int{1}
+}
+
+func (m *KeyPress) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_KeyPress.Unmarshal(m, b)
+}
+func (m *KeyPress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_KeyPress.Marshal(b, m, deterministic)
+}
+func (m *KeyPress) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_KeyPress.Merge(m, src)
+}
+func (m *KeyPress) XXX_Size() int {
+	return xxx_messageInfo_KeyPress.Size(m)
+}
+func (m *KeyPress) XXX_DiscardUnknown() {
+	xxx_messageInfo_KeyPress.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_KeyPress proto.InternalMessageInfo
+
+func (m *KeyPress) GetKey() uint32 {
+	if m != nil {
+		return m.Key
+	}
+	return 0
+}
+
+func (m *KeyPress) GetModifier() uint32 {
+	if m != nil {
+		return m.Modifier
+	}
+	return 0
+}
+
+func (m *KeyPress) GetUpper() bool {
+	if m != nil {
+		return m.Upper
+	}
+	return false
+}
+
+func (m *KeyPress) GetSleep() uint32 {
+	if m != nil {
+		return m.Sleep
+	}
+	return 0
+}
+
 type EntrySummary struct {
 	Complete             bool     `protobuf:"varint,1,opt,name=complete,proto3" json:"complete,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -104,7 +167,7 @@ func (m *EntrySummary) Reset()         { *m = EntrySummary{} }
 func (m *EntrySummary) String() string { return proto.CompactTextString(m) }
 func (*EntrySummary) ProtoMessage()    {}
 func (*EntrySummary) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f0b261c32c410cd6, []int{1}
+	return fileDescriptor_f0b261c32c410cd6, []int{2}
 }
 
 func (m *EntrySummary) XXX_Unmarshal(b []byte) error {
@@ -132,29 +195,74 @@ func (m *EntrySummary) GetComplete() bool {
 	return false
 }
 
+type Summary struct {
+	Complete             bool     `protobuf:"varint,1,opt,name=complete,proto3" json:"complete,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Summary) Reset()         { *m = Summary{} }
+func (m *Summary) String() string { return proto.CompactTextString(m) }
+func (*Summary) ProtoMessage()    {}
+func (*Summary) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f0b261c32c410cd6, []int{3}
+}
+
+func (m *Summary) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Summary.Unmarshal(m, b)
+}
+func (m *Summary) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Summary.Marshal(b, m, deterministic)
+}
+func (m *Summary) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Summary.Merge(m, src)
+}
+func (m *Summary) XXX_Size() int {
+	return xxx_messageInfo_Summary.Size(m)
+}
+func (m *Summary) XXX_DiscardUnknown() {
+	xxx_messageInfo_Summary.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Summary proto.InternalMessageInfo
+
+func (m *Summary) GetComplete() bool {
+	if m != nil {
+		return m.Complete
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*Key)(nil), "keyrpc.Key")
+	proto.RegisterType((*KeyPress)(nil), "keyrpc.KeyPress")
 	proto.RegisterType((*EntrySummary)(nil), "keyrpc.EntrySummary")
+	proto.RegisterType((*Summary)(nil), "keyrpc.Summary")
 }
 
 func init() { proto.RegisterFile("keyrpc.proto", fileDescriptor_f0b261c32c410cd6) }
 
 var fileDescriptor_f0b261c32c410cd6 = []byte{
-	// 212 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0xcf, 0xc1, 0x4a, 0xc4, 0x30,
-	0x10, 0x06, 0x60, 0xe3, 0x6e, 0xbb, 0x71, 0x5c, 0x2f, 0xc3, 0x1e, 0xe2, 0x9e, 0x4a, 0x4f, 0xc1,
-	0xc3, 0x82, 0x7a, 0xf4, 0x28, 0x9e, 0x0a, 0x22, 0xf1, 0x01, 0x24, 0x96, 0x39, 0x48, 0x9a, 0x26,
-	0x64, 0x53, 0x71, 0xde, 0x5e, 0x36, 0xb5, 0xb2, 0xb7, 0xff, 0x1b, 0x86, 0x61, 0x7e, 0xd8, 0x3a,
-	0xe2, 0x14, 0xfb, 0x43, 0x4c, 0x21, 0x07, 0xac, 0x67, 0xb5, 0x3f, 0xb0, 0xea, 0x88, 0xf1, 0x16,
-	0xa4, 0x23, 0xfe, 0x18, 0xad, 0x27, 0x25, 0x1a, 0xa1, 0xaf, 0xcc, 0xc6, 0x11, 0xbf, 0x5a, 0x4f,
-	0xa8, 0x60, 0xf3, 0xfd, 0x95, 0xf2, 0x64, 0x07, 0x75, 0xd9, 0x08, 0x7d, 0x63, 0x16, 0x22, 0xc2,
-	0xfa, 0xd8, 0xdb, 0x51, 0xad, 0xca, 0xb8, 0x64, 0xdc, 0x41, 0x75, 0x1c, 0x88, 0xa2, 0x5a, 0x37,
-	0x42, 0x57, 0x66, 0xc6, 0x69, 0xd3, 0x87, 0xde, 0xa9, 0xaa, 0x11, 0x5a, 0x9a, 0x92, 0xdb, 0x3b,
-	0xd8, 0xbe, 0x8c, 0x39, 0xf1, 0xfb, 0xe4, 0xbd, 0x4d, 0x8c, 0x7b, 0x90, 0x7d, 0xf0, 0x71, 0xa0,
-	0x3c, 0xbf, 0x20, 0xcd, 0xbf, 0x1f, 0x9e, 0xa0, 0xee, 0x88, 0xcd, 0xdb, 0x33, 0xde, 0x83, 0x3c,
-	0xa5, 0x30, 0x65, 0xc2, 0xeb, 0xc3, 0x5f, 0xa5, 0x8e, 0x78, 0xbf, 0x5b, 0x70, 0x7e, 0xb4, 0xbd,
-	0xd0, 0xe2, 0xb3, 0x2e, 0x8d, 0x1f, 0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0xec, 0x3e, 0xd7, 0xa9,
-	0x01, 0x01, 0x00, 0x00,
+	// 280 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x91, 0xcd, 0x4a, 0xc4, 0x30,
+	0x10, 0x80, 0x8d, 0xfb, 0x17, 0xe3, 0x16, 0x97, 0xb0, 0x87, 0xd8, 0x53, 0x29, 0x08, 0xc5, 0xc3,
+	0x82, 0xfa, 0x06, 0x8a, 0xa7, 0xa2, 0x2c, 0x59, 0x3c, 0x4b, 0xed, 0x8e, 0x50, 0xda, 0x34, 0x21,
+	0x4d, 0xc5, 0xbc, 0xbd, 0x74, 0xfa, 0x43, 0x8f, 0xde, 0xe6, 0x1b, 0x66, 0xf2, 0xcd, 0x4c, 0xd8,
+	0xb6, 0x04, 0x6f, 0x4d, 0x7e, 0x30, 0x56, 0x3b, 0xcd, 0xd7, 0x3d, 0xc5, 0xbf, 0x6c, 0x91, 0x82,
+	0xe7, 0xb7, 0x8c, 0x96, 0xe0, 0x3f, 0xeb, 0x4c, 0x81, 0x20, 0x11, 0x49, 0xae, 0xe4, 0xa6, 0x04,
+	0xff, 0x9e, 0x29, 0xe0, 0x82, 0x6d, 0x7e, 0x0a, 0xeb, 0xda, 0xac, 0x12, 0x97, 0x11, 0x49, 0x02,
+	0x39, 0x22, 0xe7, 0x6c, 0xd9, 0xe4, 0x59, 0x2d, 0x16, 0x98, 0xc6, 0x98, 0xef, 0xd9, 0xaa, 0xa9,
+	0x00, 0x8c, 0x58, 0x46, 0x24, 0x59, 0xc9, 0x1e, 0xba, 0x4a, 0xa5, 0xf3, 0x52, 0xac, 0x22, 0x92,
+	0x50, 0x89, 0x71, 0x7c, 0x66, 0x34, 0x05, 0x7f, 0xb4, 0xd0, 0x34, 0x7c, 0x87, 0x53, 0xa0, 0x39,
+	0x90, 0x38, 0x50, 0xc8, 0xe8, 0x9b, 0x3e, 0x17, 0xdf, 0x05, 0xd8, 0x41, 0x3b, 0x71, 0xe7, 0xf8,
+	0x30, 0x06, 0x2c, 0x8a, 0xa9, 0xec, 0xa1, 0xcb, 0x9e, 0x26, 0x73, 0x20, 0x7b, 0x88, 0xef, 0xd9,
+	0xf6, 0xb5, 0x76, 0xd6, 0x9f, 0x5a, 0xa5, 0x32, 0x8b, 0xef, 0xe6, 0x5a, 0x99, 0x0a, 0x5c, 0xbf,
+	0x28, 0x95, 0x13, 0xc7, 0x77, 0x6c, 0xf3, 0x8f, 0xb2, 0xc7, 0x9a, 0xad, 0x53, 0xf0, 0xf2, 0xf8,
+	0xc2, 0x1f, 0x70, 0x05, 0xa9, 0x5b, 0x07, 0xfc, 0xfa, 0x30, 0xdc, 0x37, 0x05, 0x1f, 0xee, 0x47,
+	0x98, 0xbb, 0xe3, 0x8b, 0x84, 0x0c, 0x2d, 0xcf, 0xad, 0x6d, 0x1c, 0xdf, 0xcd, 0x5a, 0xf0, 0x0e,
+	0xe1, 0xcd, 0x98, 0x99, 0xb5, 0x7c, 0xad, 0xf1, 0xc7, 0x9e, 0xfe, 0x02, 0x00, 0x00, 0xff, 0xff,
+	0x2e, 0x22, 0xcb, 0x25, 0xc1, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -170,6 +278,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type KeyRPCClient interface {
 	KeyRoute(ctx context.Context, opts ...grpc.CallOption) (KeyRPC_KeyRouteClient, error)
+	KeyBurst(ctx context.Context, opts ...grpc.CallOption) (KeyRPC_KeyBurstClient, error)
 }
 
 type keyRPCClient struct {
@@ -214,9 +323,44 @@ func (x *keyRPCKeyRouteClient) CloseAndRecv() (*EntrySummary, error) {
 	return m, nil
 }
 
+func (c *keyRPCClient) KeyBurst(ctx context.Context, opts ...grpc.CallOption) (KeyRPC_KeyBurstClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_KeyRPC_serviceDesc.Streams[1], "/keyrpc.KeyRPC/KeyBurst", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &keyRPCKeyBurstClient{stream}
+	return x, nil
+}
+
+type KeyRPC_KeyBurstClient interface {
+	Send(*KeyPress) error
+	CloseAndRecv() (*Summary, error)
+	grpc.ClientStream
+}
+
+type keyRPCKeyBurstClient struct {
+	grpc.ClientStream
+}
+
+func (x *keyRPCKeyBurstClient) Send(m *KeyPress) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *keyRPCKeyBurstClient) CloseAndRecv() (*Summary, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(Summary)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // KeyRPCServer is the server API for KeyRPC service.
 type KeyRPCServer interface {
 	KeyRoute(KeyRPC_KeyRouteServer) error
+	KeyBurst(KeyRPC_KeyBurstServer) error
 }
 
 func RegisterKeyRPCServer(s *grpc.Server, srv KeyRPCServer) {
@@ -249,6 +393,32 @@ func (x *keyRPCKeyRouteServer) Recv() (*Key, error) {
 	return m, nil
 }
 
+func _KeyRPC_KeyBurst_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(KeyRPCServer).KeyBurst(&keyRPCKeyBurstServer{stream})
+}
+
+type KeyRPC_KeyBurstServer interface {
+	SendAndClose(*Summary) error
+	Recv() (*KeyPress, error)
+	grpc.ServerStream
+}
+
+type keyRPCKeyBurstServer struct {
+	grpc.ServerStream
+}
+
+func (x *keyRPCKeyBurstServer) SendAndClose(m *Summary) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *keyRPCKeyBurstServer) Recv() (*KeyPress, error) {
+	m := new(KeyPress)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _KeyRPC_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "keyrpc.KeyRPC",
 	HandlerType: (*KeyRPCServer)(nil),
@@ -257,6 +427,11 @@ var _KeyRPC_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "KeyRoute",
 			Handler:       _KeyRPC_KeyRoute_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "KeyBurst",
+			Handler:       _KeyRPC_KeyBurst_Handler,
 			ClientStreams: true,
 		},
 	},

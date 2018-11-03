@@ -32,6 +32,7 @@ package keyrpc;
 
 service KeyRPC {
     rpc KeyRoute(stream Key) returns (EntrySummary) {}
+    rpc KeyBurst(stream KeyPress) returns (Summary) {}
 }
 
 message Key {
@@ -42,6 +43,18 @@ message Key {
     bool mock = 5;
 }
 
+message KeyPress {
+    uint32 Key = 1;
+    uint32 Modifier = 2;
+    bool Upper = 3;
+    uint32 Sleep = 4;
+}
+
 message EntrySummary {
+    bool complete = 1;
+}
+
+
+message Summary {
     bool complete = 1;
 }
