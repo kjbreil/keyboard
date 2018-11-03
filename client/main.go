@@ -20,24 +20,25 @@ var (
 )
 
 func runKey(client pb.KeyRPCClient) {
-	keys := stringToKeys("22827")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	keys := stringToKeys("111112222233333444445555566666777778888899999")
+	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
 	defer cancel()
 	stream, err := client.KeyRoute(ctx)
 	if err != nil {
 		log.Fatalf("%v.KeyRoute(_) = _, %v", client, err)
 	}
 	for _, key := range keys {
+		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
 		log.Printf("Sending Key: %s", key.KeyName)
-		if err := stream.Send(key); err != nil {
+		err := stream.Send(key)
+		if err != nil {
 			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
 		}
-		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
 	}
 	reply, err := stream.CloseAndRecv()
 
-	if reply.Error != "" {
-		log.Fatalf("Got Error from Server: %s", reply.Error)
+	if !reply.Complete {
+		log.Fatalf("Got Error from Server:")
 	}
 }
 
@@ -48,7 +49,7 @@ func randomKey() *pb.Key {
 		KeyName: key.Name,
 		Virtual: uint32(key.Virtual),
 		Scan:    uint32(key.Scan),
-		Sleep:   100,
+		Sleep:   10,
 		Mock:    true,
 	}
 

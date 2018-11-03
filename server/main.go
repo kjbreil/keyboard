@@ -34,22 +34,26 @@ func (s *server) KeyRoute(stream pb.KeyRPC_KeyRouteServer) error {
 	for {
 		key, err := stream.Recv()
 		if err == io.EOF {
+			log.Println("EOF MET")
 			// endTime := time.Now()
 			return stream.SendAndClose(&pb.EntrySummary{
-				Error: "",
+				Complete: true,
 			})
 		}
 		if err != nil {
+			log.Println(err)
 			return stream.SendAndClose(&pb.EntrySummary{
-				Error: err.Error(),
+				Complete: false,
 			})
 		}
 		log.Printf("I am pressing this: %s Virtual: %d Scan: %d", key.KeyName, key.Virtual, key.Scan)
-
+		sl := int(key.Sleep)
 		kp := keyboard.KeyPress{
-			Key: rune(key.Virtual),
+			Key:   rune(key.Virtual),
+			Sleep: &sl,
 		}
 		err = kp.Press()
+
 		if err != nil {
 			log.Fatalf("There was an errur: %v\n", err)
 		}
@@ -76,6 +80,9 @@ func main() {
 		}
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
+
+	// opts = append(opts, grpc.ConnectionTimeout(600*time.Second))
+	log.Println(opts)
 	grpcServer := grpc.NewServer(opts...)
 	pb.RegisterKeyRPCServer(grpcServer, newServer())
 	grpcServer.Serve(lis)

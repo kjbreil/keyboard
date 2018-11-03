@@ -43,5 +43,5 @@ message Key {
 }
 
 message EntrySummary {
-    string error = 1;
+    bool complete = 1;
 }
