@@ -21,7 +21,7 @@ var (
 
 func runKey(client pb.KeyRPCClient) {
 	keys := stringToKeys("111112222233333444445555566666777778888899999")
-	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 360*time.SRecond)
 	defer cancel()
 	stream, err := client.KeyRoute(ctx)
 	if err != nil {
