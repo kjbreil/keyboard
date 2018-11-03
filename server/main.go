@@ -28,7 +28,7 @@ func newServer() *server {
 	return s
 }
 
-func (s *server) KeyRoute(stream pb.KeyRPC_KeyRouteServer) error {
+func (s *server) KeyBurst(stream pb.KeyRPC_KeyBurstServer) error {
 	// startTime := time.Now()
 
 	for {
@@ -36,22 +36,30 @@ func (s *server) KeyRoute(stream pb.KeyRPC_KeyRouteServer) error {
 		if err == io.EOF {
 			log.Println("EOF MET")
 			// endTime := time.Now()
-			return stream.SendAndClose(&pb.EntrySummary{
+			return stream.SendAndClose(&pb.Summary{
 				Complete: true,
 			})
 		}
 		if err != nil {
 			log.Println(err)
-			return stream.SendAndClose(&pb.EntrySummary{
+			return stream.SendAndClose(&pb.Summary{
 				Complete: false,
 			})
 		}
-		log.Printf("I am pressing this: %s Virtual: %d Scan: %d", key.KeyName, key.Virtual, key.Scan)
-		sl := int(key.Sleep)
+
 		kp := keyboard.KeyPress{
-			Key:   rune(key.Virtual),
-			Sleep: &sl,
+			Key:   rune(key.Key),
+			Upper: key.Upper,
 		}
+		if int(key.Sleep) != 0 {
+			sl := int(key.Sleep)
+			kp.Sleep = &sl
+		}
+		if int(key.Modifier) != 0 {
+			mo := rune(key.Modifier)
+			kp.Modifier = &mo
+		}
+		log.Printf("Going to press: %s\n", keyboard.Scan[kp.Key].Name)
 		err = kp.Press()
 
 		if err != nil {

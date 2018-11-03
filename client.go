@@ -2,6 +2,7 @@ package keyboard
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -9,63 +10,48 @@ import (
 	"google.golang.org/grpc"
 )
 
-// RunString sends a complete string
-func RunString(s string, client pb.KeyRPCClient) {
-	keys := stringToKeys(s)
-	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
-	defer cancel()
-	stream, err := client.KeyRoute(ctx)
-	if err != nil {
-		log.Fatalf("%v.KeyRoute(_) = _, %v", client, err)
-	}
-	for _, key := range keys {
-		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
-		log.Printf("Sending Key: %s", key.KeyName)
-		err := stream.Send(key)
-		if err != nil {
-			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
-		}
-	}
-	reply, err := stream.CloseAndRecv()
-
-	if !reply.Complete {
-		log.Fatalf("Got Error from Server:")
-	}
-}
-
 // RunBurst sends a complete burst
-func doRunBurst(b KeyBurst, client pb.KeyRPCClient) {
+func RunBurst(b KeyBurst, serverAddr *string) error {
+	var opts []grpc.DialOption
+
+	opts = append(opts, grpc.WithInsecure())
+
+	conn, err := grpc.Dial(*serverAddr, opts...)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	client := pb.NewKeyRPCClient(conn)
+
 	keys := burstToKeys(b)
 	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
 	defer cancel()
-	stream, err := client.KeyRoute(ctx)
+	stream, err := client.KeyBurst(ctx)
 	if err != nil {
-		log.Fatalf("%v.KeyRoute(_) = _, %v", client, err)
+		return err
 	}
 	for _, key := range keys {
 		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
-		log.Printf("Sending Key: %s", key.KeyName)
+		log.Printf("Sending Key: %s", Scan[rune(key.Key)].Name)
 		err := stream.Send(key)
 		if err != nil {
-			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
+			return err
 		}
 	}
 	reply, err := stream.CloseAndRecv()
 
 	if !reply.Complete {
-		log.Fatalf("Got Error from Server:")
+		return fmt.Errorf("got Error from Server")
 	}
+	return nil
 }
 
-func randomKey() *pb.Key {
+func randomKey() *pb.KeyPress {
 	key := Scan[randKey(Scan)]
 
-	return &pb.Key{
-		KeyName: key.Name,
-		Virtual: uint32(key.Virtual),
-		Scan:    uint32(key.Scan),
-		Sleep:   10,
-		Mock:    true,
+	return &pb.KeyPress{
+		Key:   uint32(key.Virtual),
+		Sleep: 10,
 	}
 
 }
@@ -77,48 +63,17 @@ func randKey(scan map[rune]VirtScan) rune {
 	return 0
 }
 
-// RunBurst connects and runst a burst
-func RunBurst(b KeyBurst, serverAddr *string) {
-	var opts []grpc.DialOption
-
-	opts = append(opts, grpc.WithInsecure())
-
-	conn, err := grpc.Dial(*serverAddr, opts...)
-	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
-	}
-	defer conn.Close()
-	client := pb.NewKeyRPCClient(conn)
-
-	doRunBurst(b, client)
-}
-
-func stringToKeys(s string) (keys []*pb.Key) {
-	ks, bs := 100, 100
-	// silently throwing away an error - get rid of this ASAP
-	b, _ := StringToBurst(s, &ks, &bs)
+func burstToKeys(b KeyBurst) (keys []*pb.KeyPress) {
 	for _, k := range b.Presses {
-		var key = &pb.Key{
-			KeyName: Scan[k.Key].Name,
-			Virtual: uint32(Scan[k.Key].Virtual),
-			Scan:    uint32(Scan[k.Key].Scan),
-			Sleep:   500,
-			Mock:    true,
+		var key = &pb.KeyPress{
+			Key:   uint32(k.Key),
+			Upper: k.Upper,
 		}
-		keys = append(keys, key)
-		// k.
-	}
-	return
-}
-
-func burstToKeys(b KeyBurst) (keys []*pb.Key) {
-	for _, k := range b.Presses {
-		var key = &pb.Key{
-			KeyName: Scan[k.Key].Name,
-			Virtual: uint32(Scan[k.Key].Virtual),
-			Scan:    uint32(Scan[k.Key].Scan),
-			Sleep:   500,
-			Mock:    true,
+		if k.Modifier != nil {
+			key.Modifier = uint32(*k.Modifier)
+		}
+		if k.Sleep != nil {
+			key.Sleep = uint32(*k.Sleep)
 		}
 		keys = append(keys, key)
 		// k.
