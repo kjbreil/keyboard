@@ -36,6 +36,11 @@ func runKey(client pb.KeyRPCClient) {
 			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
 		}
 	}
+	reply, err := stream.CloseAndRecv()
+
+	if reply.Error != "" {
+		log.Fatalf("Got Error from Server: %s", reply.Error)
+	}
 }
 
 func randomKey() *pb.Key {

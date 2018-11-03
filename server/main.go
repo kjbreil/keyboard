@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net"
 
@@ -28,13 +29,20 @@ func newServer() *server {
 }
 
 func (s *server) KeyRoute(stream pb.KeyRPC_KeyRouteServer) error {
-
-	fmt.Println("hjerer")
+	// startTime := time.Now()
 
 	for {
 		key, err := stream.Recv()
+		if err == io.EOF {
+			// endTime := time.Now()
+			return stream.SendAndClose(&pb.EntrySummary{
+				Error: "",
+			})
+		}
 		if err != nil {
-			return err
+			return stream.SendAndClose(&pb.EntrySummary{
+				Error: err.Error(),
+			})
 		}
 		log.Printf("I am pressing this: %s Virtual: %d Scan: %d", key.KeyName, key.Virtual, key.Scan)
 
