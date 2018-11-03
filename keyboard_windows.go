@@ -27,10 +27,10 @@ func downKey(key rune) error {
 	var vkey rune
 	scanCode, ok := Scan[key]
 	if ok {
-		key = rune(scanCode.virtual)
-		vkey = rune(scanCode.scan)
-		log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.name, key, vkey)
-		if scanCode.name == "." {
+		key = rune(scanCode.Virtual)
+		vkey = rune(scanCode.Scan)
+		log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.Name, key, vkey)
+		if scanCode.Name == "." {
 			time.Sleep(1 * time.Second)
 		}
 	} else {
@@ -49,8 +49,8 @@ func upKey(key rune) error {
 	var vkey rune
 	scanCode, ok := Scan[key]
 	if ok {
-		key = rune(scanCode.virtual)
-		vkey = rune(scanCode.scan)
+		key = rune(scanCode.Virtual)
+		vkey = rune(scanCode.Scan)
 
 	} else {
 		vkey = key + 0x80

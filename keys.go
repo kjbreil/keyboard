@@ -9,144 +9,144 @@ import (
 
 type keyMap map[rune]int
 
-// VirtScan is the virtual and scan codes for a key
+// VirtScan is the Virtual and Scan codes for a key
 type VirtScan struct {
-	name    string
-	virtual uint16
-	scan    uint16
+	Name    string
+	Virtual uint16
+	Scan    uint16
 }
 
-// Scan is key scan code map for rune to scan code
+// Scan is key Scan code map for rune to Scan code
 var Scan = map[rune]VirtScan{
 	'0': VirtScan{
-		name:    "0",
-		virtual: 0x30,
-		scan:    0x0b,
+		Name:    "0",
+		Virtual: 0x30,
+		Scan:    0x0b,
 	},
 	'1': VirtScan{
-		name:    "1",
-		virtual: 0x31,
-		scan:    0x02,
+		Name:    "1",
+		Virtual: 0x31,
+		Scan:    0x02,
 	},
 	'2': VirtScan{
-		name:    "2",
-		virtual: 0x32,
-		scan:    0x03,
+		Name:    "2",
+		Virtual: 0x32,
+		Scan:    0x03,
 	},
 	'3': VirtScan{
-		name:    "3",
-		virtual: 0x33,
-		scan:    0x04,
+		Name:    "3",
+		Virtual: 0x33,
+		Scan:    0x04,
 	},
 	'4': VirtScan{
-		name:    "4",
-		virtual: 0x34,
-		scan:    0x05,
+		Name:    "4",
+		Virtual: 0x34,
+		Scan:    0x05,
 	},
 	'5': VirtScan{
-		name:    "5",
-		virtual: 0x35,
-		scan:    0x06,
+		Name:    "5",
+		Virtual: 0x35,
+		Scan:    0x06,
 	},
 	'6': VirtScan{
-		name:    "6",
-		virtual: 0x36,
-		scan:    0x07,
+		Name:    "6",
+		Virtual: 0x36,
+		Scan:    0x07,
 	},
 	'7': VirtScan{
-		name:    "7",
-		virtual: 0x37,
-		scan:    0x08,
+		Name:    "7",
+		Virtual: 0x37,
+		Scan:    0x08,
 	},
 	'8': VirtScan{
-		name:    "8",
-		virtual: 0x38,
-		scan:    0x09,
+		Name:    "8",
+		Virtual: 0x38,
+		Scan:    0x09,
 	},
 	'9': VirtScan{
-		name:    "9",
-		virtual: 0x39,
-		scan:    0x0a,
+		Name:    "9",
+		Virtual: 0x39,
+		Scan:    0x0a,
 	},
 	'B': VirtScan{
-		name:    "B",
-		virtual: 0x42,
-		scan:    0x30,
+		Name:    "B",
+		Virtual: 0x42,
+		Scan:    0x30,
 	},
 	0x70: VirtScan{
-		name:    "F1",
-		virtual: 0x70,
-		scan:    0x3b,
+		Name:    "F1",
+		Virtual: 0x70,
+		Scan:    0x3b,
 	},
 	0x71: VirtScan{
-		name:    "F2",
-		virtual: 0x71,
-		scan:    0x3c,
+		Name:    "F2",
+		Virtual: 0x71,
+		Scan:    0x3c,
 	},
 	0x72: VirtScan{
-		name:    "F3",
-		virtual: 0x72,
-		scan:    0x3d,
+		Name:    "F3",
+		Virtual: 0x72,
+		Scan:    0x3d,
 	},
 	0x73: VirtScan{
-		name:    "F4",
-		virtual: 0x73,
-		scan:    0x3e,
+		Name:    "F4",
+		Virtual: 0x73,
+		Scan:    0x3e,
 	},
 	0x74: VirtScan{
-		name:    "F5",
-		virtual: 0x74,
-		scan:    0x3f,
+		Name:    "F5",
+		Virtual: 0x74,
+		Scan:    0x3f,
 	},
 	0x75: VirtScan{
-		name:    "F6",
-		virtual: 0x75,
-		scan:    0x40,
+		Name:    "F6",
+		Virtual: 0x75,
+		Scan:    0x40,
 	},
 	0x76: VirtScan{
-		name:    "F7",
-		virtual: 0x76,
-		scan:    0x41,
+		Name:    "F7",
+		Virtual: 0x76,
+		Scan:    0x41,
 	},
 	0x77: VirtScan{
-		name:    "F8",
-		virtual: 0x77,
-		scan:    0x42,
+		Name:    "F8",
+		Virtual: 0x77,
+		Scan:    0x42,
 	},
 	0x78: VirtScan{
-		name:    "F9",
-		virtual: 0x78,
-		scan:    0x43,
+		Name:    "F9",
+		Virtual: 0x78,
+		Scan:    0x43,
 	},
 	0x79: VirtScan{
-		name:    "F10",
-		virtual: 0x79,
-		scan:    0x44,
+		Name:    "F10",
+		Virtual: 0x79,
+		Scan:    0x44,
 	},
 	0x7A: VirtScan{
-		name:    "F11",
-		virtual: 0x7A,
-		scan:    0x0a,
+		Name:    "F11",
+		Virtual: 0x7A,
+		Scan:    0x0a,
 	},
 	0xA0: VirtScan{
-		name:    "Left Shift",
-		virtual: 0xA0,
-		scan:    0x2a,
+		Name:    "Left Shift",
+		Virtual: 0xA0,
+		Scan:    0x2a,
 	},
 	0xA2: VirtScan{
-		name:    "Left Control",
-		virtual: 0xA2,
-		scan:    0x1d,
+		Name:    "Left Control",
+		Virtual: 0xA2,
+		Scan:    0x1d,
 	},
 	0x0D: VirtScan{
-		name:    "Enter",
-		virtual: 0x0D,
-		scan:    0x1c,
+		Name:    "Enter",
+		Virtual: 0x0D,
+		Scan:    0x1c,
 	},
 	'.': VirtScan{
-		name:    ".",
-		virtual: 0x6E,
-		scan:    0x34,
+		Name:    ".",
+		Virtual: 0x6E,
+		Scan:    0x34,
 	},
 }
 
