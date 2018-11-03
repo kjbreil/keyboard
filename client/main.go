@@ -20,10 +20,7 @@ var (
 )
 
 func runKey(client pb.KeyRPCClient) {
-	var keys []*pb.Key
-	for i := 0; i < 10; i++ {
-		keys = append(keys, randomKey())
-	}
+	keys := stringToKeys("22827")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	stream, err := client.KeyRoute(ctx)
@@ -35,6 +32,7 @@ func runKey(client pb.KeyRPCClient) {
 		if err := stream.Send(key); err != nil {
 			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
 		}
+		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
 	}
 	reply, err := stream.CloseAndRecv()
 
@@ -86,4 +84,22 @@ func main() {
 	client := pb.NewKeyRPCClient(conn)
 
 	runKey(client)
+}
+
+func stringToKeys(s string) (keys []*pb.Key) {
+	ks, bs := 100, 100
+	// silently throwing away an error - get rid of this ASAP
+	b, _ := keyboard.StringToBurst(s, &ks, &bs)
+	for _, k := range b.Presses {
+		var key = &pb.Key{
+			KeyName: keyboard.Scan[k.Key].Name,
+			Virtual: uint32(keyboard.Scan[k.Key].Virtual),
+			Scan:    uint32(keyboard.Scan[k.Key].Scan),
+			Sleep:   500,
+			Mock:    true,
+		}
+		keys = append(keys, key)
+		// k.
+	}
+	return
 }

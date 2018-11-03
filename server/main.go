@@ -49,8 +49,10 @@ func (s *server) KeyRoute(stream pb.KeyRPC_KeyRouteServer) error {
 		kp := keyboard.KeyPress{
 			Key: rune(key.Virtual),
 		}
-		kp.Press()
-
+		err = kp.Press()
+		if err != nil {
+			log.Fatalf("There was an errur: %v\n", err)
+		}
 	}
 }
 
