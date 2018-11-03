@@ -6,6 +6,8 @@ import (
 	"log"
 	"net"
 
+	"github.com/kjbreil/keyboard"
+
 	pb "github.com/kjbreil/keyboard/keyrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -34,7 +36,13 @@ func (s *server) KeyRoute(stream pb.KeyRPC_KeyRouteServer) error {
 		if err != nil {
 			return err
 		}
-		log.Printf("I would be pressing this Name: %s Virtual: %d Scan: %d", key.KeyName, key.Virtual, key.Scan)
+		log.Printf("I am pressing this: %s Virtual: %d Scan: %d", key.KeyName, key.Virtual, key.Scan)
+
+		kp := keyboard.KeyPress{
+			Key: rune(key.Virtual),
+		}
+		kp.Press()
+
 	}
 }
 

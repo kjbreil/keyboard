@@ -31,7 +31,7 @@ func runKey(client pb.KeyRPCClient) {
 		log.Fatalf("%v.KeyRoute(_) = _, %v", client, err)
 	}
 	for _, key := range keys {
-		log.Println("Sending Key")
+		log.Printf("Sending Key: %s", key.KeyName)
 		if err := stream.Send(key); err != nil {
 			log.Fatalf("%v.Send(%v) = %v", stream, key, err)
 		}
