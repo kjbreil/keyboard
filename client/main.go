@@ -45,6 +45,8 @@ func randomKey() *pb.Key {
 		KeyName: key.Name,
 		Virtual: uint32(key.Virtual),
 		Scan:    uint32(key.Scan),
+		Sleep:   100,
+		Mock:    true,
 	}
 
 }
