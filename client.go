@@ -30,8 +30,6 @@ func (b KeyBurst) Server(serverAddr *string) error {
 		return err
 	}
 	for _, key := range keys {
-		time.Sleep(time.Duration(key.Sleep) * time.Millisecond)
-		// log.Printf("Sending Key: %s", Scan[rune(key.Key)].Name)
 		err := stream.Send(key)
 		if err != nil {
 			return err
