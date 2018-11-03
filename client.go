@@ -37,7 +37,7 @@ func (b KeyBurst) Server(serverAddr *string) error {
 	}
 	reply, err := stream.CloseAndRecv()
 
-	if !reply.Complete {
+	if reply != nil && !reply.Complete {
 		return fmt.Errorf("got Error from Server")
 	}
 	return nil
