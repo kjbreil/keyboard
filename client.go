@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-// RunBurst sends a complete burst
-func RunBurst(b KeyBurst, serverAddr *string) error {
+// Server sends a complete burst to a server
+func (b KeyBurst) Server(serverAddr *string) error {
 	var opts []grpc.DialOption
 
 	opts = append(opts, grpc.WithInsecure())
