@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"io"
@@ -26,6 +27,22 @@ type server struct{}
 func newServer() *server {
 	s := &server{}
 	return s
+}
+
+func (s *server) SwitchWindow(ctx context.Context, window *pb.WindowName) (*pb.Summary, error) {
+	sum := new(pb.Summary)
+	title := window.Name
+	h, err := keyboard.FindWindow(title)
+	if err != nil {
+		sum.Complete = false
+		return sum, err
+	} else {
+		fmt.Printf("Found '%s' window: handle=0x%x\n", title, h)
+		// Set the forground window to the named one
+		keyboard.SetForegroundWindow(h)
+		sum.Complete = true
+	}
+	return sum, err
 }
 
 func (s *server) KeyBurst(stream pb.KeyRPC_KeyBurstServer) error {

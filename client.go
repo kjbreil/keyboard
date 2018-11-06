@@ -3,6 +3,7 @@ package keyboard
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	pb "github.com/kjbreil/keyboard/keyrpc"
@@ -43,6 +44,32 @@ func (b KeyBurst) Server(serverAddr *string) error {
 	}
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+// ServerSwitchWindow switches to a windows with name windowName, must be exact
+func ServerSwitchWindow(windowName string, serverAddr *string) error {
+	wn := new(pb.WindowName)
+	wn.Name = windowName
+	var opts []grpc.DialOption
+
+	opts = append(opts, grpc.WithInsecure())
+
+	conn, err := grpc.Dial(*serverAddr, opts...)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	client := pb.NewKeyRPCClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	sum, err := client.SwitchWindow(ctx, wn)
+	if sum != nil && sum.Complete {
+		log.Println("Window switch complete")
+	} else {
+		log.Println("Window switch errur")
 	}
 	return nil
 }

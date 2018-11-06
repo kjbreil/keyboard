@@ -32,6 +32,7 @@ package keyrpc;
 
 service KeyRPC {
     rpc KeyBurst(stream KeyPress) returns (Summary) {}
+    rpc SwitchWindow(WindowName) returns (Summary) {}
 }
 
 
@@ -44,4 +45,8 @@ message KeyPress {
 
 message Summary {
     bool complete = 1;
+}
+
+message WindowName {
+    string Name = 1;
 }
