@@ -35,13 +35,14 @@ func (s *server) SwitchWindow(ctx context.Context, window *pb.WindowName) (*pb.S
 	h, err := keyboard.FindWindow(title)
 	if err != nil {
 		sum.Complete = false
-		return sum, err
-	} else {
-		fmt.Printf("Found '%s' window: handle=0x%x\n", title, h)
-		// Set the forground window to the named one
-		keyboard.SetForegroundWindow(h)
-		sum.Complete = true
+		return sum, fmt.Errorf("Could not find a window with name: %s", title)
+
 	}
+	fmt.Printf("Found '%s' window: handle=0x%x\n", title, h)
+	// Set the forground window to the named one
+	keyboard.SetForegroundWindow(h)
+	sum.Complete = true
+
 	return sum, err
 }
 
