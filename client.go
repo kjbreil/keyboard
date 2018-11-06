@@ -3,7 +3,6 @@ package keyboard
 import (
 	"context"
 	"fmt"
-	"time"
 
 	pb "github.com/kjbreil/keyboard/keyrpc"
 	"google.golang.org/grpc"
@@ -82,7 +81,7 @@ func (b KeyBurst) Server(serverAddr *string) error {
 
 	keys := burstToKeys(b)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	stream, err := client.KeyBurst(ctx)
 	if err != nil {
@@ -120,7 +119,7 @@ func ServerSwitchWindow(windowName string, serverAddr *string) error {
 	defer conn.Close()
 	client := pb.NewKeyRPCClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	sum, err := client.SwitchWindow(ctx, wn)
 	if sum != nil && sum.Complete {
