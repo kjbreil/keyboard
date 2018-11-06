@@ -23,7 +23,8 @@ func (b KeyBurst) Server(serverAddr *string) error {
 	client := pb.NewKeyRPCClient(conn)
 
 	keys := burstToKeys(b)
-	ctx, cancel := context.WithTimeout(context.Background(), 360*time.Second)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	stream, err := client.KeyBurst(ctx)
 	if err != nil {
@@ -39,6 +40,9 @@ func (b KeyBurst) Server(serverAddr *string) error {
 
 	if reply != nil && !reply.Complete {
 		return fmt.Errorf("got Error from Server")
+	}
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -73,7 +77,6 @@ func burstToKeys(b KeyBurst) (keys []*pb.KeyPress) {
 			key.Sleep = uint32(*k.Sleep)
 		}
 		keys = append(keys, key)
-		// k.
 	}
 	return
 }
