@@ -11,7 +11,6 @@ import (
 
 	pb "github.com/kjbreil/keyboard/keyrpc"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 )
 
 var (
@@ -35,8 +34,6 @@ func (s *server) KeyBurst(stream pb.KeyRPC_KeyBurstServer) error {
 	for {
 		key, err := stream.Recv()
 		if err == io.EOF {
-			log.Println("EOF MET")
-			// endTime := time.Now()
 			return stream.SendAndClose(&pb.Summary{
 				Complete: true,
 			})
@@ -78,22 +75,6 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	var opts []grpc.ServerOption
-	if *tls {
-		if *certFile == "" {
-			*certFile = "server1.pem"
-		}
-		if *keyFile == "" {
-			*keyFile = "server1.key"
-		}
-		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
-		if err != nil {
-			log.Fatalf("Failed to generate credentials %v", err)
-		}
-		opts = []grpc.ServerOption{grpc.Creds(creds)}
-	}
-
-	// opts = append(opts, grpc.ConnectionTimeout(600*time.Second))
-	log.Println(opts)
 	grpcServer := grpc.NewServer(opts...)
 	pb.RegisterKeyRPCServer(grpcServer, newServer())
 	grpcServer.Serve(lis)
