@@ -151,7 +151,12 @@ var Scan = map[rune]VirtScan{
 	0x54: VirtScan{
 		Name:    "T",
 		Virtual: 0x54,
-		Scan:    0x34,
+		Scan:    0x14,
+	},
+	0x55: VirtScan{
+		Name:    "U",
+		Virtual: 0x55,
+		Scan:    0x16,
 	},
 }
 
