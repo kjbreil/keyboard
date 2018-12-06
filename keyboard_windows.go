@@ -3,7 +3,6 @@ package keyboard
 import (
 	"fmt"
 	"syscall"
-	"time"
 	"unsafe"
 
 	"golang.org/x/sys/windows"
@@ -29,9 +28,9 @@ func downKey(key rune) error {
 		key = rune(scanCode.Virtual)
 		vkey = rune(scanCode.Scan)
 		// log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.Name, key, vkey)
-		if scanCode.Name == "." {
-			time.Sleep(1 * time.Second)
-		}
+		// if scanCode.Name == "." {
+		// 	time.Sleep(1 * time.Second)
+		// }
 	} else {
 		vkey = key + 0x80
 	}
