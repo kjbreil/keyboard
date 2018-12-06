@@ -2,7 +2,6 @@ package keyboard
 
 import (
 	"fmt"
-	"log"
 	"syscall"
 	"time"
 	"unsafe"
@@ -29,7 +28,7 @@ func downKey(key rune) error {
 	if ok {
 		key = rune(scanCode.Virtual)
 		vkey = rune(scanCode.Scan)
-		log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.Name, key, vkey)
+		// log.Printf("Key: %s, Virtual: %v, Scan:%v\n", scanCode.Name, key, vkey)
 		if scanCode.Name == "." {
 			time.Sleep(1 * time.Second)
 		}
