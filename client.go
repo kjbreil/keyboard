@@ -3,6 +3,7 @@ package keyboard
 import (
 	"context"
 	"fmt"
+	"time"
 
 	pb "github.com/kjbreil/keyboard/keyrpc"
 	"google.golang.org/grpc"
@@ -21,23 +22,32 @@ func (ks KeySeq) Server(serverAddr *string) error {
 	defer conn.Close()
 	client := pb.NewKeyRPCClient(conn)
 
-	var keys []*pb.KeyPress
-	for _, eb := range ks.Bursts {
-		keys = append(keys, burstToKeys(eb)...)
-	}
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	stream, err := client.KeyBurst(ctx)
 	if err != nil {
 		return err
 	}
-	for _, key := range keys {
-		err := stream.Send(key)
-		if err != nil {
-			return err
+
+	// var keys []*pb.KeyPress
+	for _, eb := range ks.Bursts {
+		keys := burstToKeys(eb)
+		for _, key := range keys {
+			// if key.Sleep != nil {
+			// 	fmt.Println("Key!", *key.Sleep)
+			// 	time.Sleep(time.Duration(*key.Sleep * time.Millisecond))
+			// }
+			err := stream.Send(key)
+			if err != nil {
+				return err
+			}
+		}
+		// if sleep exists sleep for the burst amount
+		if eb.Sleep != nil {
+			time.Sleep(time.Duration(*eb.Sleep) * time.Millisecond)
 		}
 	}
+
 	reply, err := stream.CloseAndRecv()
 
 	if reply != nil && !reply.Complete {
